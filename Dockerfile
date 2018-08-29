@@ -11,6 +11,18 @@ RUN . $HOME/.nvm/nvm.sh && nvm install $SHIPPABLE_NODE_VERSION && nvm alias defa
 RUN . $HOME/.nvm/nvm.sh && which node
 RUN ln -s /root/.nvm/versions/node/$SHIPPABLE_NODE_VERSION/bin/node /usr/bin/node
 RUN ln -s /root/.nvm/versions/node/$SHIPPABLE_NODE_VERSION/bin/supervisor /usr/bin/supervisor
+
 #RUN . $HOME/.nvm/nvm.sh && npm install pty.js
 
-#docker stop node ; docker rm node ; docker run -it --privileged --name node land007/node:latest
+#RUN mkdir /node
+ADD node /node
+WORKDIR /node
+RUN mv /node /node_
+ADD check.sh /
+RUN sed -i 's/\r$//' /check.sh
+RUN chmod a+x /check.sh
+
+CMD /check.sh /node ; /etc/init.d/ssh start && supervisor -w /node/ /node/main.js
+EXPOSE 80/tcp
+
+#docker stop node ; docker rm node ; docker run -it --privileged -v ~/docker/node:/node  -p 80:80 --name node land007/node:latest
