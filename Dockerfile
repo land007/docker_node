@@ -14,6 +14,7 @@ RUN ln -s /root/.nvm/versions/node/$SHIPPABLE_NODE_VERSION/bin/supervisor /usr/b
 
 #RUN . $HOME/.nvm/nvm.sh && npm install pty.js
 
+# Define working directory.
 #RUN mkdir /node
 ADD node /node
 WORKDIR /node
@@ -25,7 +26,7 @@ ADD check.sh /
 RUN sed -i 's/\r$//' /check.sh
 RUN chmod a+x /check.sh
 
-CMD /check.sh /node ; /etc/init.d/ssh start && supervisor -w /node/ /node/main.js
+CMD /check.sh /node ; /etc/init.d/ssh start ; supervisor -w /node/ /node/main.js
 EXPOSE 80/tcp
 
 #docker stop node ; docker rm node ; docker run -it --privileged -v ~/docker/node:/node -p 80:80 --name node land007/node:latest
