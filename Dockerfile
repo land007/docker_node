@@ -4,8 +4,9 @@ MAINTAINER Yiqiu Jia <yiqiujia@hotmail.com>
 
 RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 ENV NVM_DIR=/root/.nvm
-ENV SHIPPABLE_NODE_VERSION=v8.11.1
+#ENV SHIPPABLE_NODE_VERSION=v8.11.1
 #ENV SHIPPABLE_NODE_VERSION=v9.11.1
+ENV SHIPPABLE_NODE_VERSION=v10.13.0
 RUN . $HOME/.nvm/nvm.sh && nvm install $SHIPPABLE_NODE_VERSION && nvm alias default $SHIPPABLE_NODE_VERSION && nvm use default && npm install supervisor -g
 #RUN . $HOME/.nvm/nvm.sh && nvm install $SHIPPABLE_NODE_VERSION && nvm alias default $SHIPPABLE_NODE_VERSION && nvm use default && npm install gulp babel  jasmine mocha serial-jasmine serial-mocha aws-test-worker -g
 RUN . $HOME/.nvm/nvm.sh && which node
