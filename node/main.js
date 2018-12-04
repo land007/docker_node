@@ -1,7 +1,38 @@
 var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var httpProxy = require('http-proxy');
 
+//新建一个代理 Proxy Server 对象
+var proxy = httpProxy.createProxyServer({});
+//捕获异常
+proxy.on('error',
+	function(err, req, res) {
+		res.writeHead(500, {
+			'Content-Type' : 'text/plain'
+		});
+		res.end('Something went wrong. And we are reporting a custom error message.');
+	});
+
+app.get('/eye/*', function(req, res){
+	// 在这里可以自定义你的路由分发
+	var host = req.headers.host, ip = req.headers['x-forwarded-for']
+			|| req.connection.remoteAddress;
+	console.log("client ip:" + ip + ", host:" + host);
+	switch (host) {
+	case 'solr.qhkly.com':
+	case 'neo4j.qhkly.com':
+		proxy.web(req, res, {
+			target : 'http://192.168.0.96:8008/eye/'
+		});
+		break;
+	default:
+		res.writeHead(200, {
+			'Content-Type' : 'text/plain'
+		});
+		res.end('Welcome to my server!');
+	}
+});
 app.get('/', function(req, res){
   res.sendFile(__dirname + '/index.html');
 });

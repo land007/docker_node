@@ -1,15 +1,16 @@
-FROM land007/debian:latest
+FROM land007/debian-build:latest
 
 MAINTAINER Yiqiu Jia <yiqiujia@hotmail.com>
 
-RUN apt-get update && apt-get install -y build-essential cmake python ffmpeg && apt-get clean
+RUN apt-get update && apt-get install -y python ffmpeg && apt-get clean
 RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 ENV NVM_DIR=/root/.nvm
 #ENV SHIPPABLE_NODE_VERSION=v8.11.1
-ENV SHIPPABLE_NODE_VERSION=v9.11.1
-#ENV SHIPPABLE_NODE_VERSION=v10.13.0
-RUN . $HOME/.nvm/nvm.sh && nvm install $SHIPPABLE_NODE_VERSION && nvm alias default $SHIPPABLE_NODE_VERSION && nvm use default && npm install -g node-gyp && npm install socket.io && npm install express && npm install pty.js && npm install http-proxy && npm install -g supervisor
+#ENV SHIPPABLE_NODE_VERSION=v9.11.1
+ENV SHIPPABLE_NODE_VERSION=v10.13.0
+RUN . $HOME/.nvm/nvm.sh && nvm install $SHIPPABLE_NODE_VERSION && nvm alias default $SHIPPABLE_NODE_VERSION && nvm use default && npm install -g node-gyp && npm install socket.io && npm install express && npm install http-proxy && npm install bagpipe && npm install -g supervisor
 #RUN . $HOME/.nvm/nvm.sh && nvm install $SHIPPABLE_NODE_VERSION && nvm alias default $SHIPPABLE_NODE_VERSION && nvm use default && npm install gulp babel  jasmine mocha serial-jasmine serial-mocha aws-test-worker -g
+#RUN . $HOME/.nvm/nvm.sh && npm install pty.js
 RUN . $HOME/.nvm/nvm.sh && which node
 #RUN ln -s /root/.nvm/versions/node/$SHIPPABLE_NODE_VERSION/bin/node /usr/bin/node
 #RUN ln -s /root/.nvm/versions/node/$SHIPPABLE_NODE_VERSION/bin/supervisor /usr/bin/supervisor
