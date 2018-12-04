@@ -21,7 +21,7 @@ RUN sed -i 's/\r$//' /check.sh && chmod a+x /check.sh
 # Define working directory.
 #RUN mkdir /node
 ADD node /node
-RUN sed -i 's/\r$//' /node_/start.sh && chmod a+x /node/start.sh
+RUN sed -i 's/\r$//' /node/start.sh && chmod a+x /node/start.sh
 RUN ln -s /node ~/ && ln -s /node /home/land007
 RUN mv /node /node_
 WORKDIR /node
