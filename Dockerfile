@@ -16,15 +16,16 @@ RUN . $HOME/.nvm/nvm.sh && which node
 #RUN ln -s /root/.nvm/versions/node/$SHIPPABLE_NODE_VERSION/bin/supervisor /usr/bin/supervisor
 ENV PATH $PATH:/root/.nvm/versions/node/$SHIPPABLE_NODE_VERSION/bin
 
+ADD check.sh /
+RUN sed -i 's/\r$//' /check.sh && chmod a+x /check.sh
 # Define working directory.
 #RUN mkdir /node
-ADD node /node
+ADD node /node_
+RUN sed -i 's/\r$//' /node_/start.sh && chmod a+x /node_/start.sh
 RUN ln -s /node ~/ && ln -s /node /home/land007
 WORKDIR /node
 VOLUME ["/node"]
 RUN mv /node /node_
-ADD check.sh /
-RUN sed -i 's/\r$//' /check.sh && chmod a+x /check.sh && chmod a+x /node_/start.sh
 
 CMD /check.sh /node ; /etc/init.d/ssh start ; /node/start.sh
 EXPOSE 80/tcp
