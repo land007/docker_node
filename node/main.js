@@ -21,7 +21,6 @@ io.on('connection', function(socket){
 	  console.log('user disconnected');
   });
   socket.on('chat message', function(msg){
-	  
 //	  //给除了自己以外的客户端广播消息
 //	  socket.broadcast.emit("msg",{data:"hello,everyone"}); 
 //	  //给所有客户端广播消息
