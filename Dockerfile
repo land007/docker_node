@@ -20,12 +20,12 @@ ADD check.sh /
 RUN sed -i 's/\r$//' /check.sh && chmod a+x /check.sh
 # Define working directory.
 #RUN mkdir /node
-ADD node /node_
-RUN sed -i 's/\r$//' /node_/start.sh && chmod a+x /node_/start.sh
+ADD node /node
+RUN sed -i 's/\r$//' /node_/start.sh && chmod a+x /node/start.sh
 RUN ln -s /node ~/ && ln -s /node /home/land007
+RUN mv /node /node_
 WORKDIR /node
 VOLUME ["/node"]
-RUN mv /node /node_
 
 CMD /check.sh /node ; /etc/init.d/ssh start ; /node/start.sh
 EXPOSE 80/tcp
