@@ -2,7 +2,7 @@ FROM land007/debian-build:latest
 
 MAINTAINER Yiqiu Jia <yiqiujia@hotmail.com>
 
-RUN apt-get update && apt-get install -y python ffmpeg && apt-get clean
+RUN apt-get update && apt-get install -y python && apt-get clean
 RUN curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
 ENV NVM_DIR=/root/.nvm
 #ENV SHIPPABLE_NODE_VERSION=v8.11.1
