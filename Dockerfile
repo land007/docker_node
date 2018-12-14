@@ -11,7 +11,7 @@ ENV NVM_DIR=/root/.nvm
 ENV SHIPPABLE_NODE_VERSION=v9.11.2
 #ENV SHIPPABLE_NODE_VERSION=v10.13.0
 #ENV SHIPPABLE_NODE_VERSION=v10.14.1
-RUN . $HOME/.nvm/nvm.sh && nvm install $SHIPPABLE_NODE_VERSION && nvm alias default $SHIPPABLE_NODE_VERSION && nvm use default && npm install -g node-gyp supervisor http-server && npm install socket.io ws express http-proxy bagpipe pty.js
+RUN . $HOME/.nvm/nvm.sh && nvm install $SHIPPABLE_NODE_VERSION && nvm alias default $SHIPPABLE_NODE_VERSION && nvm use default && npm install -g node-gyp supervisor http-server && npm install socket.io ws express http-proxy bagpipe pty.js request nodemailer
 #RUN . $HOME/.nvm/nvm.sh && nvm install $SHIPPABLE_NODE_VERSION && nvm alias default $SHIPPABLE_NODE_VERSION && nvm use default && npm install gulp babel  jasmine mocha serial-jasmine serial-mocha aws-test-worker -g
 #RUN . $HOME/.nvm/nvm.sh && npm install pty.js
 RUN . $HOME/.nvm/nvm.sh && which node
