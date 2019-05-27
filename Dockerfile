@@ -32,7 +32,7 @@ WORKDIR /node
 VOLUME ["/node"]
 
 RUN echo $(date "+%Y-%m-%d_%H:%M:%S") >> /.image_time
-RUN echo "land007/debian-build" >> /.image_name
+RUN echo "land007/node" >> /.image_name
 
 EXPOSE 80/tcp
 #CMD /check.sh /node; /etc/init.d/ssh start; /node/start.sh
