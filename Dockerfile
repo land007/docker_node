@@ -31,7 +31,13 @@ RUN mv /node /node_
 WORKDIR /node
 VOLUME ["/node"]
 
-CMD /check.sh /node; /etc/init.d/ssh start; /node/start.sh
+RUN echo $(date "+%Y-%m-%d_%H:%M:%S") >> /.image_time
+RUN echo "land007/debian-build" >> /.image_name
+
 EXPOSE 80/tcp
+#CMD /check.sh /node; /etc/init.d/ssh start; /node/start.sh
+RUN echo "/check.sh /node" >> /start.sh
+#RUN echo "supervisor -w /node/ /node/server.js" >> /start.sh
+RUN echo "/usr/bin/nohup supervisor -w /node/ /node/server.js > /node/node.out 2>&1 &" >> /start.sh
 
 #docker stop node; docker rm node; docker run -it --privileged -v ~/docker/node3:/node -p 20080:80 -p 20081:20081 -p 20082:20082 -p 20000:20022 --name node land007/node:latest
