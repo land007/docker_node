@@ -2,17 +2,23 @@ FROM land007/debian-build:latest
 
 MAINTAINER Yiqiu Jia <yiqiujia@hotmail.com>
 
-RUN apt-get update && apt-get install -y python && apt-get clean && \
-	curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+RUN apt-get update && apt-get install -y python && apt-get clean
+#RUN curl -x http:// -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.11/install.sh | bash
+ADD install.sh /root/
+RUN /root/install.sh
 ENV NVM_DIR=/root/.nvm
 #ENV SHIPPABLE_NODE_VERSION=v8.11.1
 #ENV SHIPPABLE_NODE_VERSION=v8.14.0
 #ENV SHIPPABLE_NODE_VERSION=v9.11.1
-ENV SHIPPABLE_NODE_VERSION=v9.11.2
+#ENV SHIPPABLE_NODE_VERSION=v9.11.2
 #ENV SHIPPABLE_NODE_VERSION=v10.13.0
 #ENV SHIPPABLE_NODE_VERSION=v10.14.1
-RUN echo 'export SHIPPABLE_NODE_VERSION=v9.11.2' >> /etc/profile && \
-	. $HOME/.nvm/nvm.sh && nvm install $SHIPPABLE_NODE_VERSION && nvm alias default $SHIPPABLE_NODE_VERSION && nvm use default && cd / && npm init -y && npm install -g node-gyp supervisor http-server && npm install socket.io ws express http-proxy bagpipe eventproxy pty.js chokidar request nodemailer await-signal log4js moment && \
+ENV SHIPPABLE_NODE_VERSION=v10.20.0
+#ENV SHIPPABLE_NODE_VERSION=v14.3.0
+ENV NVM_NODEJS_ORG_MIRROR=http://nodejs.org/dist
+#RUN . $HOME/.nvm/nvm.sh && nvm ls-remote
+RUN echo 'export SHIPPABLE_NODE_VERSION=v10.20.0' >> /etc/profile && \
+	. $HOME/.nvm/nvm.sh && nvm install $SHIPPABLE_NODE_VERSION && nvm alias default $SHIPPABLE_NODE_VERSION && nvm use default && cd / && npm init -y && npm install -g node-gyp supervisor http-server && npm install socket.io ws express http-proxy bagpipe eventproxy chokidar request nodemailer await-signal log4js moment && \
 #RUN . $HOME/.nvm/nvm.sh && nvm install $SHIPPABLE_NODE_VERSION && nvm alias default $SHIPPABLE_NODE_VERSION && nvm use default && npm install gulp babel  jasmine mocha serial-jasmine serial-mocha aws-test-worker -g && \
 #RUN . $HOME/.nvm/nvm.sh && cd / && npm install pty.js
 	. $HOME/.nvm/nvm.sh && which node
@@ -37,6 +43,9 @@ RUN echo $(date "+%Y-%m-%d_%H:%M:%S") >> /.image_times && \
 	echo $(date "+%Y-%m-%d_%H:%M:%S") > /.image_time && \
 	echo "land007/node" >> /.image_names && \
 	echo "land007/node" > /.image_name
+
+RUN apt-get install -y dos2unix
+RUN dos2unix /root/.nvm/versions/node/v10.20.0/lib/node_modules/supervisor/lib/cli-wrapper.js
 
 EXPOSE 80/tcp
 #CMD /check.sh /node; /etc/init.d/ssh start; /node/start.sh
