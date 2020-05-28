@@ -31,7 +31,6 @@ RUN echo 'export PATH=$PATH:/root/.nvm/versions/node/$SHIPPABLE_NODE_VERSION/bin
 #RUN mkdir /node
 ADD node /node
 RUN ln -s $HOME/.nvm/versions/node/$SHIPPABLE_NODE_VERSION/lib/node_modules /node && \
-	sed -i 's/\r$//' /node/start.sh && chmod a+x /node/start.sh && \
 	ln -s /node ~/ && ln -s /node /home/land007 && \
 	mv /node /node_
 WORKDIR /node
@@ -46,7 +45,6 @@ RUN apt-get install -y dos2unix
 RUN dos2unix /root/.nvm/versions/node/v10.20.0/lib/node_modules/supervisor/lib/cli-wrapper.js
 
 EXPOSE 80/tcp
-#CMD /check.sh /node; /etc/init.d/ssh start; /node/start.sh
 RUN echo "/check.sh /node" >> /start.sh && \
 #	echo "/usr/bin/nohup supervisor -w /node/ /node/server.js > /node/node.out 2>&1 &" >> /start.sh
 	echo "supervisor -w /node/ /node/server.js" >> /start.sh
