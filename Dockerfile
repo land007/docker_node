@@ -27,8 +27,6 @@ RUN echo 'export SHIPPABLE_NODE_VERSION=v10.20.0' >> /etc/profile && \
 ENV PATH $PATH:/root/.nvm/versions/node/$SHIPPABLE_NODE_VERSION/bin
 RUN echo 'export PATH=$PATH:/root/.nvm/versions/node/$SHIPPABLE_NODE_VERSION/bin' >> /etc/profile
 
-ADD check.sh /
-RUN sed -i 's/\r$//' /check.sh && chmod a+x /check.sh
 # Define working directory.
 #RUN mkdir /node
 ADD node /node
@@ -50,7 +48,9 @@ RUN dos2unix /root/.nvm/versions/node/v10.20.0/lib/node_modules/supervisor/lib/c
 EXPOSE 80/tcp
 #CMD /check.sh /node; /etc/init.d/ssh start; /node/start.sh
 RUN echo "/check.sh /node" >> /start.sh && \
-#RUN echo "supervisor -w /node/ /node/server.js" >> /start.sh && \
-	echo "/usr/bin/nohup supervisor -w /node/ /node/server.js > /node/node.out 2>&1 &" >> /start.sh
+#	echo "/usr/bin/nohup supervisor -w /node/ /node/server.js > /node/node.out 2>&1 &" >> /start.sh
+	echo "supervisor -w /node/ /node/server.js" >> /start.sh
 
 #docker stop node; docker rm node; docker run -it --privileged -v ~/docker/node3:/node -p 20080:80 -p 20081:20081 -p 20082:20082 -p 20000:20022 --name node land007/node:latest
+#> docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t land007/node --push .
+#> docker buildx build --platform linux/amd64,linux/arm/v7 -t land007/node --push .
