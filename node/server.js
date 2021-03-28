@@ -1,6 +1,18 @@
+var cors = require('cors');
 var app = require('express')();
+//ENABLE CORS
+app.use(cors());
 var http = require('http').Server(app);
-var io = require('socket.io')(http);
+var io = require('socket.io')(http, {
+//  cors: {
+//    origin: "http://192.168.1.124",
+//    methods: ["GET", "POST"]
+//  }
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
 var httpProxy = require('http-proxy');
 
 //新建一个代理 Proxy Server 对象
@@ -13,7 +25,6 @@ proxy.on('error',
 		});
 		res.end('Something went wrong. And we are reporting a custom error message.');
 	});
-
 app.get('/eye/*', function(req, res){
 	// 在这里可以自定义你的路由分发
 	var host = req.headers.host, ip = req.headers['x-forwarded-for']
@@ -53,7 +64,7 @@ io.on('connection', function(socket){
   });
   socket.on('chat message', function(msg){
 //	  //给除了自己以外的客户端广播消息
-//	  socket.broadcast.emit("msg",{data:"hello,everyone"}); 
+//	  socket.broadcast.emit("msg",{data:"hello,everyone"});
 //	  //给所有客户端广播消息
 //	  io.sockets.emit("msg",{data:"hello,all"});
 //	  //不包括自己
@@ -67,12 +78,13 @@ io.on('connection', function(socket){
 //	  //获取particular room中的客户端，返回所有在此房间的socket实例
 //	  io.sockets.clients('particular room')
 	  //给自己所在的rooms发消息
-	  for(var room in socket.rooms) {
+	  for(var room of socket.rooms) {
 		  if(room != socket.id){
+              console.log('room', room, 'msg', msg);
 			  io.to(room).emit('chat message', msg);
 		  }
 	  }
-	  socket.join('cached');
+	  //socket.join('cached');
 //	  console.log(JSON.stringify(socket.rooms));
 //	  io.emit('chat message', msg);
   });

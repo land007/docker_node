@@ -13,11 +13,20 @@
     #messages li { padding: 5px 10px; }
     #messages li:nth-child(odd) { background: #eee; }
 </style>
+<!-- <script src="http://xxx.xxx.xxx.xxx/socket.io/socket.io.js"></script> -->
 <script src="/socket.io/socket.io.js"></script>
 <script src="http://code.jquery.com/jquery-1.11.1.js"></script>
 <script>
 var room = 'global';//cached
 $(function() {
+//     var options = {
+//         rememberUpgrade:true,
+//         transports: ['websocket'],
+//         secure:true,
+//         rejectUnauthorized: false
+//     }
+//     var socket = io('http://xxx.xxx.xxx.xxx/',options);
+//     var socket = io('http://xxx.xxx.xxx.xxx/');
     var socket = io();
     $('form').submit(function(){
         socket.emit('chat message', $('#m').val());
