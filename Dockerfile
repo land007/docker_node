@@ -52,7 +52,7 @@ RUN dos2unix /root/.nvm/versions/node/v10.20.0/lib/node_modules/supervisor/lib/c
 EXPOSE 80/tcp
 RUN echo "/check.sh /node" >> /start.sh && \
 #	echo "/usr/bin/nohup supervisor -w /node/ /node/server.js > /node/node.out 2>&1 &" >> /start.sh
-	echo "supervisor -w /node/ /node/server.js" >> /start.sh
+	echo "supervisor -w /node/ -i node_modules /node/server.js" >> /start.sh
 
 #docker build -t land007/node .
 #docker rm -f node; docker run -it --privileged -v ~/docker/node3:/node -p 20080:80 -p 20081:20081 -p 20082:20082 -p 20000:20022 --name node land007/node:latest
