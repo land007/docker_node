@@ -1,7 +1,9 @@
 var cors = require('cors');
-var app = require('express')();
+var express = require('express');
+var app = express();
 //ENABLE CORS
 app.use(cors());
+app.use(express.static('public'));
 var http = require('http').Server(app);
 var io = require('socket.io')(http, {
 //  cors: {
